@@ -7,14 +7,13 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Livewire\Cart;
 
-// Route::get('/cart', [PagesController::class, 'cart'])->name('cart');
 Route::get('/cart', Cart::class)->name('cart');
 Route::get('/', [PagesController::class, 'home'])->name('home');
 Route::get('/shop', [PagesController::class, 'shop'])->name('shop');
 Route::post('/cart/add', [PagesController::class, 'addToCart'])->name('cart.add');
 
 Route::get('filter/{id}/category', [PagesController::class, 'filterByCategory'])->name('filter-by-category');
-Route::get('search-shop', [PagesController::class, 'searchShop'])->name('search-shop');
+Route::post('search-shop', [PagesController::class, 'searchShop'])->name('search-shop');
 Route::get('categories/{id}', [PagesController::class, 'category'])->name('category');
 
 Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');

@@ -34,7 +34,8 @@
                                     </a>
                                 </div>
                             </td>
-                            <td class="column-5 total">{{ $item['itemTotal'] }}</td>
+                            {{-- <td class="column-5 total">{{ $item['itemTotal'] }}</td> --}}
+                            <td class="column-5 total">{{ $item['price'] * $item['quantity'] }}</td>
                             <td><a href="#" wire:click.prevent="removeItem({{ $item['id'] }})" class="column-6">Remove</a></td>
                         </tr>
                     @endforeach

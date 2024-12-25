@@ -72,25 +72,16 @@ class PagesController extends Controller
 
         $cart = session()->get('cart');
 
-        // $cart[$productId]['quantity']
-
         if (isset($cart[$productId])) {
-            // $quantity = $cart[$productId]['quantity'];
-            // dump($cart[$productId]);
-            // dump($quantity);
-            // die();
-            dump("if");
             $cart[$productId] = [
                 'id' => $product->id,
                 'name' => $product->name,
                 'image' => $product->image,
                 'price' => $product->price,
                 'quantity' => $cart[$productId]['quantity'] + 1,
-                // 'quantity' => 1,
-                'itemTotal' => $product->price
+                'itemTotal' => $product->price * $cart[$productId]['quantity']
             ];
         } else {
-            dump("else");
             $cart[$productId] = [
                 'id' => $product->id,
                 'name' => $product->name,
@@ -100,22 +91,6 @@ class PagesController extends Controller
                 'itemTotal' => $product->price
             ];
         }
-
-        // dd((int)$productId);
-        // dd($cart);
-
-        // dd($cart[]);
-        // dd($cart[2]);
-
-        // $cart[$productId] = [
-        //     'id' => $product->id,
-        //     'name' => $product->name,
-        //     'image' => $product->image,
-        //     'price' => $product->price,
-        //     // 'quantity' => $cart[$productId]['quantity'] + 1,
-        //     'quantity' => 1,
-        //     'itemTotal' => $product->price
-        // ];
 
         session()->put('cart', $cart);
 

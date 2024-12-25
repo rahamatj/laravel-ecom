@@ -515,9 +515,6 @@
             var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
             var productId = $(this).parent().parent().parent().find('#product-id').val();
 
-            // console.log(productId);
-            // console.log(nameProduct);
-
             $(this).on('click', function() {
                 $.ajax({
                     url: '{{ route('cart.add') }}',

@@ -26,7 +26,7 @@
                         </ul>
 
                         <div class="search-product pos-relative bo4 of-hidden">
-                            <form action="{{ route('search-shop') }}" method="GET">
+                            <form action="{{ route('search-shop') }}" method="POST">
                                 @csrf
                                 <input class="s-text7 size6 p-l-23 p-r-50" name="s" type="text" name="search-product"
                                     placeholder="Search Products..." />
@@ -50,10 +50,6 @@
                                     <div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
                                         <img src="{{ asset($product->image) }}" alt="IMG-PRODUCT" />
                                         <div class="block2-overlay trans-0-4">
-                                            <a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
-                                                <i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
-                                                <i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
-                                            </a>
                                             <div class="block2-btn-addcart w-size1 trans-0-4">
                                                 <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
                                                     Add to Cart
