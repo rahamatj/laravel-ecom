@@ -7,14 +7,14 @@
                 <div class="item-slick1 item1-slick1" style="background-image: url(images/master-slide-02.jpg);">
                     <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
                         <span class="caption1-slide1 m-text1 t-center animated visible-false m-b-15" data-appear="fadeInDown">
-                            Women Collection 2018
+                            Women Collection 2024
                         </span>
                         <h2 class="caption2-slide1 xl-text1 t-center animated visible-false m-b-37" data-appear="fadeInUp">
                             New arrivals
                         </h2>
                         <div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="zoomIn">
 
-                            <a href="product.html" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+                            <a href="{{ route('product', ['id' => 1]) }}" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
                                 Shop Now
                             </a>
                         </div>
@@ -23,7 +23,7 @@
                 <div class="item-slick1 item2-slick1" style="background-image: url(images/master-slide-03.jpg);">
                     <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
                         <span class="caption1-slide1 m-text1 t-center animated visible-false m-b-15" data-appear="rollIn">
-                            Women Collection 2018
+                            Women Collection 2024
                         </span>
                         <h2 class="caption2-slide1 xl-text1 t-center animated visible-false m-b-37"
                             data-appear="lightSpeedIn">
@@ -31,7 +31,7 @@
                         </h2>
                         <div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="slideInUp">
 
-                            <a href="product.html" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+                            <a href="{{ route('product', ['id' => 1]) }}" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
                                 Shop Now
                             </a>
                         </div>
@@ -42,7 +42,7 @@
                     <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
                         <span class="caption1-slide1 m-text1 t-center animated visible-false m-b-15"
                             data-appear="rotateInDownLeft">
-                            Women Collection 2018
+                            Women Collection 2024
                         </span>
                         <h2 class="caption2-slide1 xl-text1 t-center animated visible-false m-b-37"
                             data-appear="rotateInUpRight">
@@ -50,7 +50,7 @@
                         </h2>
                         <div class="wrap-btn-slide1 w-size1 animated visible-false" data-appear="rotateIn">
 
-                            <a href="product.html" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+                            <a href="{{ route('product', ['id' => 1]) }}" class="flex-c-m size2 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
                                 Shop Now
                             </a>
                         </div>
@@ -74,14 +74,9 @@
                         <div class="item-slick2 p-l-15 p-r-15">
                             <div class="block2">
                                 <div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
-                                    <img src="{{ asset($product->image) }}" alt="IMG-PRODUCT">
+                                    <img src="{{ asset($product->image) }}" alt="IMG-PRODUCT" />
                                     <div class="block2-overlay trans-0-4">
-                                        <a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
-                                            <i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
-                                            <i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
-                                        </a>
                                         <div class="block2-btn-addcart w-size1 trans-0-4">
-
                                             <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
                                                 Add to Cart
                                             </button>
@@ -90,9 +85,10 @@
                                 </div>
 
                                 <div class="block2-txt p-t-20">
-                                    <a href="product-detail.html" class="block2-name dis-block s-text3 p-b-5">
+                                    <a href="{{ route('product', ['id' => $product->id]) }}" class="block2-name dis-block s-text3 p-b-5">
                                         {{ $product->name }}
                                     </a>
+                                    <input id="product-id" type="hidden" name="product_id" value="{{ $product->id }}">
                                     <span class="block2-price m-text6 p-r-5">
                                         $ {{ $product->price }}
                                     </span>
@@ -129,7 +125,7 @@
                         <img src="{{ asset('images/shop-item-09.jpg') }}" alt="IMG-BANNER">
                         <div class="ab-t-l sizefull flex-col-c-b p-l-15 p-r-15 p-b-20">
                             <div class="t-center">
-                                <a href="product-detail.html" class="dis-block s-text3 p-b-5">
+                                <a href="{{ route('product', ['id' => 1]) }}" class="dis-block s-text3 p-b-5">
                                     Gafas sol Hawkers one
                                 </a>
                                 <span class="block2-oldprice m-text7 p-r-5">

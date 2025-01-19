@@ -5,12 +5,17 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
-use App\Livewire\Cart;
 
-Route::get('/cart', Cart::class)->name('cart');
-Route::get('/', [PagesController::class, 'home'])->name('home');
+Route::get('/product/{id}', [PagesController::class, 'product'])->name('product');
+
 Route::get('/shop', [PagesController::class, 'shop'])->name('shop');
+Route::get('/cart', [PagesController::class, 'cart'])->name('cart');
+Route::get('/checkout', [PagesController::class, 'checkout'])->name('checkout');
 Route::post('/cart/add', [PagesController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart/remove/{id}', [PagesController::class, 'removeFromCart'])->name('cart.remove');
+Route::get('/cart/increment/{id}', [PagesController::class, 'incrementItemQty'])->name('cart.increment');
+Route::get('/cart/decrement/{id}', [PagesController::class, 'decrementItemQty'])->name('cart.decrement');
+Route::get('/', [PagesController::class, 'home'])->name('home');
 
 Route::get('filter/{id}/category', [PagesController::class, 'filterByCategory'])->name('filter-by-category');
 Route::post('search-shop', [PagesController::class, 'searchShop'])->name('search-shop');
@@ -32,4 +37,4 @@ Route::get('admin/products/edit/{id}', [ProductController::class, 'editProduct']
 Route::patch('admin/products/update/{id}', [ProductController::class, 'updateProduct'])->name('admin.products.update');
 Route::delete('admin/products/delete/{id}', [ProductController::class, 'deleteProduct'])->name('admin.products.delete');
 
-Route::get('cart/flush', function () { session()->flush(); });
+Route::get('admin/orders', [AdminController::class, 'orders'])->name('admin.orders.all');

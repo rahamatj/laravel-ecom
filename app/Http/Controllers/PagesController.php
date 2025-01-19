@@ -24,6 +24,16 @@ class PagesController extends Controller
         ]);
     }
 
+    public function product($id) {
+        $product = Product::findOrFail($id);
+        $relatedProducts = Product::where('category_id', $product->category_id)->get();
+
+        return view('frontend.product', [
+            'item' => $product,
+            'relatedProducts' => $relatedProducts
+        ]);
+    }
+
     public function filterByCategory($id)
     {
         return view('frontend.shop', [
@@ -37,8 +47,7 @@ class PagesController extends Controller
     {
         $s = $request->s;
 
-        $q = Product::where('name', 'LIKE', '%' . $s . '%')
-            ->orWhere('description', 'LIKE', '%' . $s . '%');
+        $q = Product::where('name', 'LIKE', '%' . $s . '%');
 
         return view('frontend.shop', [
             'products' => $q->paginate(12),
@@ -50,15 +59,14 @@ class PagesController extends Controller
     public function cart()
     {
         $items = session()->get('cart');
-        dd($items);
 
         if (session()->has('cart')) {
-            return view('livewire.cart', [
+            return view('frontend.cart', [
                 'items' => session()->get('cart')
             ]);
         }
 
-        return redirect()->route('shop')->with('error', 'No products on session!');
+        return redirect()->route('shop')->with('error', 'No products on cart!');
     }
 
     public function addToCart(Request $request)
@@ -70,23 +78,33 @@ class PagesController extends Controller
             return redirect()->route('shop')->with('error', 'Product not found!');
         }
 
+        $cart = $this->addItemToCart($productId);
+
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
+    }
+
+    public function addItemToCart($id)
+    {
+        $product = Product::findOrFail($id);
         $cart = session()->get('cart');
 
-        if (isset($cart[$productId])) {
-            $cart[$productId] = [
+        if (isset($cart[$id])) {
+            $cart[$id] = [
                 'id' => $product->id,
                 'name' => $product->name,
                 'image' => $product->image,
                 'price' => $product->price,
-                'quantity' => $cart[$productId]['quantity'] + 1,
-                'itemTotal' => $product->price * $cart[$productId]['quantity']
+                'description' => null,
+                'quantity' => $cart[$id]['quantity'] + 1,
+                'itemTotal' => $product->price * $cart[$id]['quantity']
             ];
         } else {
-            $cart[$productId] = [
+            $cart[$id] = [
                 'id' => $product->id,
                 'name' => $product->name,
                 'image' => $product->image,
                 'price' => $product->price,
+                'description' => null,
                 'quantity' => 1,
                 'itemTotal' => $product->price
             ];
@@ -94,29 +112,58 @@ class PagesController extends Controller
 
         session()->put('cart', $cart);
 
-        return redirect()->route("shop")->with('success', 'Product added to cart successfully!');
+        return $cart;
+    }
+
+    public function removeFromCart($id)
+    {
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+        }
+
+        session()->put('cart', $cart);
+
+        return response()->json(['success' => 'Product removed from cart successfully!']);
     }
 
     public function incrementItemQty($id)
     {
         $cart = session()->get('cart', []);
 
-        $cart[$id]['quantity']++;
-        $cart[$id]['itemTotal'] = $cart[$id]['price'] * $cart[$id]['quantity'];
+        $item = $this->addItemToCart($id);
+
+        session()->forget('cart');
         session()->put('cart', $cart);
 
-        return redirect()->back();
+        $product = Product::findOrFail($id);
+        $relatedProducts = Product::where('category_id', $product->category_id)->get();
+
+        return view('frontend.product', [
+            'item' => $item[$id],
+            'relatedProducts' => $relatedProducts
+        ]);
     }
 
     public function decrementItemQty($id)
     {
+//        dd(request()->query());
+
         $cart = session()->get('cart', []);
+
         $cart[$id]['quantity']--;
         if ($cart[$id]['quantity'] > 0) {
             $cart[$id]['itemTotal'] = $cart[$id]['price'] * $cart[$id]['quantity'];
+
+            $item = $this->addItemToCart($id);
+
+            session()->forget('cart');
             session()->put('cart', $cart);
         }
 
-        return redirect()->back();
+        return view('frontend.product', [
+            'item' => $item
+        ]);
     }
 }

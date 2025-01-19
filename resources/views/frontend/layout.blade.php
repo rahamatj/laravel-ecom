@@ -316,6 +316,12 @@
         </div>
     </header>
 
+    @session('error')
+        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 text-center" role="alert">
+            <span class="font-medium"> {{ session('error') }} </span>
+        </div>
+    @endsession
+
     @yield('content')
 
     <footer class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
@@ -493,42 +499,47 @@
     <script type="text/javascript" src="{{ asset('vendor/sweetalert/sweetalert.min.js') }}"></script>
     <script type="text/javascript">
         $('.block2-btn-addcart').each(function() {
-            var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
-            var productId = $(this).parent().parent().parent().find('#product-id').val();
+            let nameProduct = $(this).parent().parent().parent().find('.block2-name').html()
+            let productId = $(this).parent().parent().parent().find('.product-id').val()
+
+            console.log(productId);
 
             $(this).on('click', function() {
                 $.ajax({
-                    url: '{{ route('cart.add') }}',
+                    url: "{{ route('cart.add') }}",
                     method: 'POST',
                     data: {
-                        '_token': '{{ csrf_token() }}',
+                        '_token': "{{ csrf_token() }}",
                         'product_id': productId,
                     },
                     success: function(response) {
+                        console.log("res");
                         swal(nameProduct, "is added to cart !", "success");
                     }
-                })
+                });
             });
         });
 
-        $('.block2-btn-addcart').first(function() {
-            var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
-            var productId = $(this).parent().parent().parent().find('#product-id').val();
+        // $('.block2-btn-addcart').first(function() {
+        //     var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+        //     var productId = $(this).parent().parent().parent().find('#product-id').val();
+        //     console.log("second");
 
-            $(this).on('click', function() {
-                $.ajax({
-                    url: '{{ route('cart.add') }}',
-                    method: 'POST',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'product_id': productId,
-                    },
-                    success: function(response) {
-                        swal(nameProduct, "is added to the cart !", "success");
-                    }
-                })
-            });
-        });
+        //     $(this).on('click', function() {
+        //         $.ajax({
+        //             url: window.location.href + '/cart/add',
+        //             method: 'POST',
+        //             data: {
+        //                 '_token': '{{ csrf_token() }}',
+        //                 'product_id': productId,
+        //             },
+        //             success: function(response) {
+        //                 console.log("second", response);
+        //                 swal(nameProduct, "is added to the cart !", "success");
+        //             }
+        //         })
+        //     });
+        // });
 
         $('.block2-btn-addwishlist').each(function() {
             var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();

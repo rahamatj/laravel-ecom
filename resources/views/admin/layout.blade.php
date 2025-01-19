@@ -96,6 +96,11 @@
                                         <li><a href="{{ route('admin.products.create') }}">New</a></li>
                                     </ul>
                                 </li>
+                                <li><a><i class="fa fa-edit"></i> Orders <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('admin.orders.all') }}">All</a></li>
+                                    </ul>
+                                </li>
                                 <li><a><i class="fa fa-desktop"></i> UI Elements <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">

@@ -38,11 +38,6 @@
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
-                    <div class="flex-sb-m flex-w p-b-35">
-                        <span class="s-text8 p-t-5 p-b-5">
-                            Showing 1–{{ $productCount % 12 }} of {{ $productCount }} results
-                        </span>
-                    </div>
                     <div class="row">
                         @foreach ($products as $product)
                             <div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
@@ -58,10 +53,10 @@
                                         </div>
                                     </div>
                                     <div class="block2-txt p-t-20">
-                                        <a href="product-detail.html" class="block2-name dis-block s-text3 p-b-5">
+                                        <a href="{{ route('product', ['id' => $product->id]) }}" class="block2-name dis-block s-text3 p-b-5">
                                             {{ $product->name }}
                                         </a>
-                                        <input id="product-id" type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <input id="product-id" type="hidden" class="product-id" name="product_id" value="{{ $product->id }}">
                                         <span class="block2-price m-text6 p-r-5"> ${{ $product->price }} </span>
                                     </div>
                                 </div>

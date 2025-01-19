@@ -34,8 +34,10 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/util.css') }}">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
 </head>
@@ -322,7 +324,7 @@
         </div>
     </header>
 
-    {{ $slot }}
+    @yield('content')
 
     <footer class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
         <div class="flex-w p-b-90">
@@ -497,36 +499,19 @@
     <script type="text/javascript" src="{{ asset('vendor/lightbox2/js/lightbox.min.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('vendor/sweetalert/sweetalert.min.js') }}"></script>
-    <script type="text/javascript">
+
+    <script>
         $('.block2-btn-addcart').each(function() {
             var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
             var productId = $(this).parent().parent().parent().find('#product-id').val();
 
             $(this).on('click', function() {
                 $.ajax({
-                    url: '{{ route('cart.add') }}',
+                    url: "{{ route('cart.add') }}",
+                    // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
                     method: 'POST',
                     data: {
-                        '_token': '{{ csrf_token() }}',
-                        'product_id': productId,
-                    },
-                    success: function(response) {
-                        swal(nameProduct, "is added to cart !", "success");
-                    }
-                })
-            });
-        });
-
-        $('.block2-btn-addcart').each(function() {
-            var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
-            var productId = $(this).parent().parent().parent().find('#product-id').val();
-
-            $(this).on('click', function() {
-                $.ajax({
-                    url: '{{ route('cart.add') }}',
-                    method: 'POST',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
+                        _token: @json(csrf_token()),
                         'product_id': productId,
                     },
                     success: function(response) {
@@ -542,6 +527,10 @@
                 swal(nameProduct, "is added to wishlist !", "success");
             });
         });
+    </script>
+
+    <script>
+        @yield('scripts')
     </script>
 
     <script src="{{ asset('js/main.js') }}"></script>
