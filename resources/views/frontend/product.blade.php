@@ -24,7 +24,7 @@
                     {{ $item['name'] }}
                 </h4>
                 <span class="m-text17">$</span>
-                <input class="m-text17" type="number" v-model="item.price" value="{{ $item['price'] }}" readonly />
+                <input class="m-text17" type="number" v-model="total" readonly />
                 <p class="s-text8 p-t-10">
                     {{ $item['description'] }}
                 </p>
@@ -48,7 +48,7 @@
                                     class="size8 m-text18 t-center num-product"
                                     type="number"
                                     value="{{ $item['quantity'] ?? 1 }}"
-                                    v-model="item.quantity"
+                                    v-model="quantity"
                                 />
                                 <button class="color1 flex-c-m size7 bg8 eff2"
                                     @click="increment"
@@ -132,18 +132,23 @@
         const app = Vue.createApp({
             data() {
                 return {
-                    itemCount: 1,
-                    totalPrice: 0,
                     item: @json($item),
+                    price: {{ $item->product->price }},
+                    quantity: {{ $item->quantity }},
+                    {{--total: {{ $item->product->price * $item->quantity }},--}}
+                    id: {{ $item->product->id  }}
                 }
+            },
+            computed: {
+              total() {
+                  return this.price * this.quantity
+              }
             },
             methods: {
                 increment() {
-                    this.item.quantity++
+                    this.quantity++
 
-                    this.item.price = this.total()
-
-                    const url = window.location.origin + '/cart/increment/' + this.item.id
+                    const url = window.location.origin + '/cart/increment/' + this.id
 
                     fetch(url)
                         .then(res => res.json())
@@ -156,12 +161,10 @@
                 },
 
                 decrement() {
-                    if (this.item.quantity > 1) {
-                        this.item.quantity--
+                    if (this.quantity > 1) {
+                        this.quantity--
 
-                        this.item.price = this.total()
-
-                        const url = window.location.origin + '/cart/decrement/' + this.item.id
+                        const url = window.location.origin + '/cart/decrement/' + this.id
 
                         fetch(url)
                             .then(res => res.json())
@@ -172,10 +175,6 @@
                                 console.log(err)
                             })
                     }
-                },
-
-                total() {
-                    return parseInt(this.item.price)  *  parseInt(this.item.quantity)
                 },
             }
         })

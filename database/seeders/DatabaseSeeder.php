@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CartItem;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Customer;
@@ -65,5 +66,7 @@ class DatabaseSeeder extends Seeder
         Order::factory(100)->create([
             'customer_id' => fake()->unique()->numberBetween(1, 10),
         ]);
+
+        CartItem::factory(50)->create();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -27,9 +28,10 @@ class PagesController extends Controller
     public function product($id) {
         $product = Product::findOrFail($id);
         $relatedProducts = Product::where('category_id', $product->category_id)->get();
+        $cartItem = CartItem::where('product_id', $product->id)->first();
 
         return view('frontend.product', [
-            'item' => $product,
+            'item' => $cartItem,
             'relatedProducts' => $relatedProducts
         ]);
     }
