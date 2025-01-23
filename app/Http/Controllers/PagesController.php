@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CartItem;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -71,6 +72,32 @@ class PagesController extends Controller
         return redirect()->route('shop')->with('error', 'No products on cart!');
     }
 
+    public function checkout()
+    {
+        return view('frontend.checkout', [
+            'items' => session()->get('cart')
+        ]);
+    }
+
+    public function order(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'address' => 'required'
+        ]);
+
+        Order::create([
+           'name' => $request->name,
+           'email' => $request->email,
+           'phone' => $request->phone,
+           'address' => $request->address
+        ]);
+
+        return redirect()->back()->with('success', 'Order created successfully');
+    }
+
     public function addToCart(Request $request)
     {
         $productId = (int)$request->input('product_id');
@@ -82,7 +109,7 @@ class PagesController extends Controller
 
         $cart = $this->addItemToCart($productId);
 
-        return redirect()->back()->with('success', 'Product added to cart successfully!');
+        return response()->json(['success' => 'Product added to cart successfully!']);
     }
 
     public function addItemToCart($id)
@@ -150,8 +177,6 @@ class PagesController extends Controller
 
     public function decrementItemQty($id)
     {
-//        dd(request()->query());
-
         $cart = session()->get('cart', []);
 
         $cart[$id]['quantity']--;

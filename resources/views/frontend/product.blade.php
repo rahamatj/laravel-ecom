@@ -21,7 +21,7 @@
             </div>
             <div class="w-size14 p-t-30 respon5">
                 <h4 class="product-detail-name m-text16 p-b-13">
-                    {{ $item['name'] }}
+                    {{ $item->product->name }}
                 </h4>
                 <span class="m-text17">$</span>
                 <input class="m-text17" type="number" v-model="total" readonly />
@@ -60,13 +60,15 @@
                                 </button>
                             </div>
                             <div
-                                class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10"
+                                class="size9 trans-0-4 m-t-10 m-b-10"
                             >
-                                <a
+                                <button
+                                    @click="addToCart"
                                     class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4"
+                                    style="cursor: pointer;"
                                 >
                                     Add to Cart
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -135,7 +137,6 @@
                     item: @json($item),
                     price: {{ $item->product->price }},
                     quantity: {{ $item->quantity }},
-                    {{--total: {{ $item->product->price * $item->quantity }},--}}
                     id: {{ $item->product->id  }}
                 }
             },
@@ -176,6 +177,30 @@
                             })
                     }
                 },
+
+                addToCart() {
+                    const url = window.location.origin + '/cart/add'
+
+                    fetch(url, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            "X-Requested-With": "XMLHttpRequest",
+                            "X-CSRF-Token": "{{ csrf_token() }}"
+                        },
+                        method: "POST"
+                    })
+                    .then(res => {
+                        console.log("res")
+                        return res.json()
+                    })
+                    .then(data => {
+                        console.log(data)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                }
             }
         })
 

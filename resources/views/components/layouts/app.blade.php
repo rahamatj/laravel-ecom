@@ -38,6 +38,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
 </head>
@@ -502,13 +503,12 @@
 
     <script>
         $('.block2-btn-addcart').each(function() {
-            var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
-            var productId = $(this).parent().parent().parent().find('#product-id').val();
+            let nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+            let productId = $(this).parent().parent().parent().find('#product-id').val();
 
             $(this).on('click', function() {
                 $.ajax({
                     url: "{{ route('cart.add') }}",
-                    // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
                     method: 'POST',
                     data: {
                         _token: @json(csrf_token()),
@@ -522,16 +522,14 @@
         });
 
         $('.block2-btn-addwishlist').each(function() {
-            var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+            let nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
             $(this).on('click', function() {
                 swal(nameProduct, "is added to wishlist !", "success");
             });
         });
     </script>
 
-    <script>
-        @yield('scripts')
-    </script>
+    @yield('scripts')
 
     <script src="{{ asset('js/main.js') }}"></script>
 </body>
