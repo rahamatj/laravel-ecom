@@ -47,7 +47,6 @@
                                 <input
                                     class="size8 m-text18 t-center num-product"
                                     type="number"
-                                    value="{{ $item['quantity'] ?? 1 }}"
                                     v-model="quantity"
                                 />
                                 <button class="color1 flex-c-m size7 bg8 eff2"
@@ -69,6 +68,8 @@
                                 >
                                     Add to Cart
                                 </button>
+
+                                <input id="add-to-cart-id-form" type="hidden" name="product_id" v-model="id">
                             </div>
                         </div>
                     </div>
@@ -188,17 +189,20 @@
                             "X-Requested-With": "XMLHttpRequest",
                             "X-CSRF-Token": "{{ csrf_token() }}"
                         },
-                        method: "POST"
+                        method: "POST",
+                        body: JSON.stringify({
+                            product_id: this.id,
+                            quantity: this.quantity
+                        })
                     })
                     .then(res => {
-                        console.log("res")
                         return res.json()
                     })
                     .then(data => {
-                        console.log(data)
+                        swal(data.product.name + ' added to cart', '', 'success')
                     })
                     .catch(err => {
-                        console.log(err)
+                        console.error(err)
                     })
                 }
             }

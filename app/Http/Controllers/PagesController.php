@@ -33,7 +33,7 @@ class PagesController extends Controller
 
         return view('frontend.product', [
             'item' => $cartItem,
-            'relatedProducts' => $relatedProducts
+            'relatedProducts' => $relatedProducts,
         ]);
     }
 
@@ -101,15 +101,19 @@ class PagesController extends Controller
     public function addToCart(Request $request)
     {
         $productId = (int)$request->input('product_id');
+        $product_quantity = (int)$request->input('quantity');
         $product = Product::find($productId);
 
         if (!$product) {
-            return redirect()->route('shop')->with('error', 'Product not found!');
+            return response()->json(['error' => 'Product not found!']);
         }
 
         $cart = $this->addItemToCart($productId);
+        $cart['quantity'] = $product_quantity;
 
-        return response()->json(['success' => 'Product added to cart successfully!']);
+        return response()->json([
+            'product' => $cart[$productId],
+            'success' => 'Product added to cart successfully!']);
     }
 
     public function addItemToCart($id)
