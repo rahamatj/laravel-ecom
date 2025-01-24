@@ -100,27 +100,28 @@ class PagesController extends Controller
 
     public function addToCart(Request $request)
     {
-        $productId = (int)$request->input('product_id');
+        $product_id = (int)$request->input('product_id');
         $product_quantity = (int)$request->input('quantity');
 
-        $product = Product::find($productId);
+        $product = Product::find($product_id);
 
         if (!$product) {
             return response()->json(['error' => 'Product not found!']);
         }
 
-        $cart = $this->addItemToCart($productId);
-        $cart[$productId]['quantity'] = $cart[$productId]['quantity'] + $product_quantity;
+        $cart = $this->addItemToCart($product_id, $product_quantity);
+
+//        $cart[$product_id]['quantity'] = $cart[$product_id]['quantity'] + $product_quantity;
 
         session()->put('cart', $cart);
 
         return response()->json([
-            'item' => $cart[$productId],
+            'item' => $cart[$product_id],
             'success' => 'Product added to cart successfully!'
         ]);
     }
 
-    public function addItemToCart($id)
+    public function addItemToCart($id, $quantity = 0)
     {
         $product = Product::findOrFail($id);
         $cart = session()->get('cart');
@@ -132,7 +133,7 @@ class PagesController extends Controller
                 'image' => $product->image,
                 'price' => $product->price,
                 'description' => null,
-                'quantity' => $cart[$id]['quantity'] + 1,
+                'quantity' => $cart[$id]['quantity'] + $quantity,
                 'itemTotal' => $product->price * $cart[$id]['quantity']
             ];
         } else {
@@ -142,7 +143,7 @@ class PagesController extends Controller
                 'image' => $product->image,
                 'price' => $product->price,
                 'description' => null,
-                'quantity' => 1,
+                'quantity' =>  $quantity,
                 'itemTotal' => $product->price
             ];
         }
