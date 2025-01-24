@@ -199,7 +199,12 @@
                         return res.json()
                     })
                     .then(data => {
-                        swal(data.product.name + ' added to cart', '', 'success')
+                        swal({
+                            title: "Success",
+                            text: "Item added to cart",
+                            icon: "success",
+                            button: "OK"
+                        })
                     })
                     .catch(err => {
                         console.error(err)

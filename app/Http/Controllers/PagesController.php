@@ -102,6 +102,7 @@ class PagesController extends Controller
     {
         $productId = (int)$request->input('product_id');
         $product_quantity = (int)$request->input('quantity');
+
         $product = Product::find($productId);
 
         if (!$product) {
@@ -109,11 +110,14 @@ class PagesController extends Controller
         }
 
         $cart = $this->addItemToCart($productId);
-        $cart['quantity'] = $product_quantity;
+        $cart[$productId]['quantity'] = $cart[$productId]['quantity'] + $product_quantity;
+
+        session()->put('cart', $cart);
 
         return response()->json([
-            'product' => $cart[$productId],
-            'success' => 'Product added to cart successfully!']);
+            'item' => $cart[$productId],
+            'success' => 'Product added to cart successfully!'
+        ]);
     }
 
     public function addItemToCart($id)
