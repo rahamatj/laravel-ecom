@@ -508,11 +508,12 @@
 
             $(this).on('click', function() {
                 $.ajax({
-                    url: "{{ route('cart.add') }}",
+                    url: window.location.origin + '/cart/add',
                     method: 'POST',
                     data: {
                         _token: @json(csrf_token()),
                         'product_id': productId,
+                        'quantity': 1
                     },
                     success: function(response) {
                         swal(nameProduct, "is added to cart !", "success");

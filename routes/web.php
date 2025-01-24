@@ -7,6 +7,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 
+Route::get('clear-cart', function () {
+   session()->forget('cart');
+});
+
 //Route::get('/', function () {
 //    return view('welcome');
 //});

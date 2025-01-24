@@ -65,7 +65,7 @@ class PagesController extends Controller
 
         if (session()->has('cart')) {
             return view('frontend.cart', [
-                'items' => session()->get('cart')
+                'items' => $items
             ]);
         }
 
@@ -100,18 +100,43 @@ class PagesController extends Controller
 
     public function addToCart(Request $request)
     {
+//        dd($request->all());
+
         $product_id = (int)$request->input('product_id');
         $product_quantity = (int)$request->input('quantity');
-
         $product = Product::find($product_id);
+
+//        dd($request->input('quantity'));
 
         if (!$product) {
             return response()->json(['error' => 'Product not found!']);
         }
 
-        $cart = $this->addItemToCart($product_id, $product_quantity);
+        $cart = session()->get('cart', []);
 
-//        $cart[$product_id]['quantity'] = $cart[$product_id]['quantity'] + $product_quantity;
+        $cart[$product_id] = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'image' => $product->image,
+            'price' => $product->price,
+            'description' => null,
+            'itemTotal' => $product->price,
+            'quantity' => $product_quantity
+        ];
+
+        if ($product_quantity > 1) {
+            if (isset($cart[$product_id])) {
+                $cart[$product_id]['quantity'] += $product_quantity;
+            } else {
+                $cart[$product_id]['quantity'] = 1;
+            }
+        } else if ($product_quantity == 1) {
+            if (isset($cart[$product_id])) {
+                $cart[$product_id]['quantity'] = 1;
+            } else {
+                $cart[$product_id]['quantity'] += 1;
+            }
+        }
 
         session()->put('cart', $cart);
 
@@ -121,7 +146,7 @@ class PagesController extends Controller
         ]);
     }
 
-    public function addItemToCart($id, $quantity = 0)
+    public function addItemToCart($id)
     {
         $product = Product::findOrFail($id);
         $cart = session()->get('cart');
@@ -133,7 +158,7 @@ class PagesController extends Controller
                 'image' => $product->image,
                 'price' => $product->price,
                 'description' => null,
-                'quantity' => $cart[$id]['quantity'] + $quantity,
+                'quantity' => $cart[$id]['quantity'] + 1,
                 'itemTotal' => $product->price * $cart[$id]['quantity']
             ];
         } else {
@@ -143,7 +168,7 @@ class PagesController extends Controller
                 'image' => $product->image,
                 'price' => $product->price,
                 'description' => null,
-                'quantity' =>  $quantity,
+                'quantity' =>  1,
                 'itemTotal' => $product->price
             ];
         }
