@@ -502,8 +502,6 @@
             let nameProduct = $(this).parent().parent().parent().find('.block2-name').html()
             let productId = $(this).parent().parent().parent().find('.product-id').val()
 
-            console.log(productId);
-
             $(this).on('click', function() {
                 $.ajax({
                     url: "{{ route('cart.add') }}",
@@ -511,9 +509,9 @@
                     data: {
                         '_token': "{{ csrf_token() }}",
                         'product_id': productId,
+                        'quantity': 1
                     },
                     success: function(response) {
-                        console.log("res");
                         swal(nameProduct, "is added to cart !", "success");
                     }
                 });

@@ -100,13 +100,9 @@ class PagesController extends Controller
 
     public function addToCart(Request $request)
     {
-//        dd($request->all());
-
         $product_id = (int)$request->input('product_id');
         $product_quantity = (int)$request->input('quantity');
         $product = Product::find($product_id);
-
-//        dd($request->input('quantity'));
 
         if (!$product) {
             return response()->json(['error' => 'Product not found!']);
@@ -121,19 +117,16 @@ class PagesController extends Controller
             'price' => $product->price,
             'description' => null,
             'itemTotal' => $product->price,
-            'quantity' => $product_quantity
+            'quantity' => 1
         ];
 
         if ($product_quantity > 1) {
             if (isset($cart[$product_id])) {
+                dd($cart[$product_id]);
                 $cart[$product_id]['quantity'] += $product_quantity;
-            } else {
-                $cart[$product_id]['quantity'] = 1;
             }
         } else if ($product_quantity == 1) {
             if (isset($cart[$product_id])) {
-                $cart[$product_id]['quantity'] = 1;
-            } else {
                 $cart[$product_id]['quantity'] += 1;
             }
         }

@@ -71,6 +71,9 @@
                     items: @json($items),
                 }
             },
+            mounted: function () {
+                console.log(this.items)
+            },
 
             methods: {
                 increment(item) {

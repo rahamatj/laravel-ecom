@@ -502,32 +502,47 @@
     <script type="text/javascript" src="{{ asset('vendor/sweetalert/sweetalert.min.js') }}"></script>
 
     <script>
-        $('.block2-btn-addcart').each(function() {
-            let nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
-            let productId = $(this).parent().parent().parent().find('#product-id').val();
+        {{--$('.block2-btn-addcart').each(function() {--}}
+        {{--    let nameProduct = $(this).parent().parent().parent().find('.block2-name').html();--}}
+        {{--    let productId = $(this).parent().parent().parent().find('#product-id').val();--}}
 
-            $(this).on('click', function() {
-                $.ajax({
-                    url: window.location.origin + '/cart/add',
-                    method: 'POST',
-                    data: {
-                        _token: @json(csrf_token()),
-                        'product_id': productId,
-                        'quantity': 1
-                    },
-                    success: function(response) {
-                        swal(nameProduct, "is added to cart !", "success");
-                    }
-                })
-            });
-        });
+        {{--    $(this).on('click', function() {--}}
+        {{--        $.ajax({--}}
+        {{--            url: window.location.origin + '/cart/add',--}}
+        {{--            method: 'POST',--}}
+        {{--            data: {--}}
+        {{--                _token: @json(csrf_token()),--}}
+        {{--                'product_id': productId,--}}
+        {{--                'quantity': 1--}}
+        {{--            },--}}
+        {{--            success: function(response) {--}}
+        {{--                console.log(response)--}}
+        {{--                swal(nameProduct, "is added to cart !", "success");--}}
+        {{--            }--}}
+        {{--        })--}}
+        {{--    });--}}
+        {{--});--}}
 
-        $('.block2-btn-addwishlist').each(function() {
-            let nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
-            $(this).on('click', function() {
-                swal(nameProduct, "is added to wishlist !", "success");
-            });
-        });
+        // console.log("ok");
+
+        {{--const app = new Vue.createApp({--}}
+        {{--    data() {--}}
+        {{--        return {--}}
+        {{--            items: @json($items),--}}
+        {{--        }--}}
+        {{--    },--}}
+        {{--    mounted: function () {--}}
+        {{--        console.log(this.items)--}}
+        {{--    }--}}
+        {{--})--}}
+
+
+{{--        $('.block2-btn-addwishlist').each(function() {--}}
+{{--            let nameProduct = $(this).parent().parent().parent().find('.block2-name').html();--}}
+{{--            $(this).on('click', function() {--}}
+{{--                swal(nameProduct, "is added to wishlist !", "success");--}}
+{{--            });--}}
+{{--        });--}}
     </script>
 
     @yield('scripts')
