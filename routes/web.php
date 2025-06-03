@@ -11,14 +11,14 @@ Route::get('clear-cart', function () {
    session()->forget('cart');
 });
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-//
-//Route::get('/dashboard', function () {
-//    return view('dashboard');
-//})->middleware(['auth', 'verified'])->name('dashboard');
-//
+Route::get('/', function () {
+   return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+   return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 //Route::middleware('auth')->group(function () {
 //    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 //    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -30,6 +30,7 @@ Route::get('/product/{id}', [PagesController::class, 'product'])->name('product'
 Route::get('/shop', [PagesController::class, 'shop'])->name('shop');
 Route::get('/cart', [PagesController::class, 'cart'])->name('cart');
 Route::get('/checkout', [PagesController::class, 'checkout'])->name('checkout');
+Route::post('/order', [PagesController::class, 'order'])->name('order');
 Route::post('/cart/add', [PagesController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart/remove/{id}', [PagesController::class, 'removeFromCart'])->name('cart.remove');
 Route::get('/cart/increment/{id}', [PagesController::class, 'incrementItemQty'])->name('cart.increment');

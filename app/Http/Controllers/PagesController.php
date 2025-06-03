@@ -85,15 +85,18 @@ class PagesController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'phone' => 'required',
-            'address' => 'required'
+            'address' => 'required',
+            'cart_items' => 'required|array',
         ]);
 
-        Order::create([
-           'name' => $request->name,
-           'email' => $request->email,
-           'phone' => $request->phone,
-           'address' => $request->address
-        ]);
+        $cartItems = $request->cart_items ?? [];
+
+        foreach ($cartItems as $item) {
+            Order::create([
+                'cart_item_id' => $item['id'],
+                'customer_id' => $request->user()->id ?? 0,
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Order created successfully');
     }
